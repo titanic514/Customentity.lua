@@ -1,0 +1,544 @@
+--// Additional help: @ActualMasterOogway
+--// Remastered Loader
+--// Cross-Platform / Update Resilience / Lua Auto-Execution
+
+--// Services
+local MarketplaceService = game:GetService("MarketplaceService")
+local HttpService = game:GetService("HttpService")
+
+--// Executor Function Fallbacks
+local req = request or (http and http.request) or http_request
+
+local is_file = isfile or function()
+    return false
+end
+
+local read_file = readfile or function()
+    return ""
+end
+
+local write_file = writefile or function()
+end
+
+local del_file = delfile or function()
+end
+
+local get_custom_asset = getcustomasset or getsynasset
+
+--// Module
+local Module = {}
+
+--//==================================================
+--// HTTP
+--//==================================================
+
+local function SafeHttpGet(url: string): string
+    local success, result = pcall(function()
+        -- Prefer game:HttpGet when available
+        if type(game.HttpGet) == "function" then
+            return game:HttpGet(url)
+        end
+
+        -- Executor request fallback
+        if req then
+            local response = req({
+                Url = url,
+                Method = "GET"
+            })
+
+            if response then
+                if response.Success == false then
+                    error(response.StatusMessage or "HTTP request failed")
+                end
+
+                return response.Body or ""
+            end
+        end
+
+        error("No valid HTTP function found")
+    end)
+
+    if not success then
+        error(
+            "HTTP Request failed:\n" ..
+            tostring(url) ..
+            "\nError: " ..
+            tostring(result)
+        )
+    end
+
+    return result
+end
+
+--//==================================================
+--// Timestamp
+--//==================================================
+
+local function timestampToMillis(timestamp: any): number
+    if type(timestamp) == "number" then
+        return timestamp
+    end
+
+    if type(timestamp) == "string" then
+        local success, dt = pcall(function()
+            return DateTime.fromIsoDate(timestamp)
+        end)
+
+        if success and dt then
+            return dt.UnixTimestampMillis
+        end
+
+        return 0
+    end
+
+    if typeof(timestamp) == "DateTime" then
+        return timestamp.UnixTimestampMillis
+    end
+
+    return 0
+end
+
+--//==================================================
+--// File / URL Detection
+--//==================================================
+
+local function GetExtension(path: string): string?
+    -- Remove query string first
+    local cleanPath = path:match("^[^?]+") or path
+
+    -- Get extension
+    local extension = cleanPath:match("%.([%w_%-]+)$")
+
+    if extension then
+        return extension:lower()
+    end
+
+    return nil
+end
+
+local function IsAssetId(path: string): boolean
+    if type(path) ~= "string" then
+        return false
+    end
+
+    if path:lower():find("rbxassetid://", 1, true) then
+        return true
+    end
+
+    -- Plain numeric asset ID
+    if tonumber(path) then
+        return true
+    end
+
+    return false
+end
+
+local function IsModelFile(path: string): boolean
+    local extension = GetExtension(path)
+
+    return extension == "rbxm"
+        or extension == "rbxmx"
+end
+
+local function IsLuaLikeFile(path: string): boolean
+    local extension = GetExtension(path)
+
+    if not extension then
+        return false
+    end
+
+    -- Lua / source-code extensions
+    local supported = {
+        lua = true,
+        luau = true,
+        txt = true,
+        text = true,
+        script = true,
+        source = true,
+        code = true,
+        lscript = true
+    }
+
+    return supported[extension] == true
+end
+
+--//==================================================
+--// Lua Auto Executor
+--//==================================================
+
+local function ExecuteLua(content: string, sourceName: string): any?
+    if type(content) ~= "string" or content == "" then
+        error("Cannot execute empty Lua source: " .. tostring(sourceName))
+    end
+
+    -- Compile first
+    local func, compileError = loadstring(content, sourceName)
+
+    if not func then
+        error(
+            debug.traceback(
+                "Syntax Error in loaded Lua file:\n" ..
+                tostring(sourceName) ..
+                "\nError: " ..
+                tostring(compileError)
+            )
+        )
+    end
+
+    -- Execute with complete runtime traceback
+    local success, result = xpcall(
+        func,
+        function(runtimeError)
+            return
+                "[RUNTIME ERROR] inside loaded Lua file:\n" ..
+                tostring(sourceName) ..
+                "\nMessage: " ..
+                tostring(runtimeError) ..
+                "\nTraceback:\n" ..
+                debug.traceback()
+        end
+    )
+
+    if not success then
+        error(result)
+    end
+
+    return result
+end
+
+--//==================================================
+--// Main Require
+--//==================================================
+
+Module.Require = function(s: string): any?
+    if type(s) ~= "string" then
+        error("Module.Require expects a string")
+    end
+
+    local content = nil
+    local sourceName = s
+
+    -- URL
+    if s:lower():sub(1, 4) == "http" then
+        content = SafeHttpGet(s)
+
+    -- Local file
+    elseif is_file(s) then
+        content = read_file(s)
+
+    else
+        error("File or URL not found: " .. s)
+    end
+
+    --==================================================
+    -- Asset files are NOT executed as Lua
+    --==================================================
+
+    if IsModelFile(s) or IsAssetId(s) then
+        error(
+            "Module.Require received a Roblox asset instead of Lua source:\n" ..
+            s ..
+            "\nUse Module.LoadCustomAsset / Module.LoadCustomInstance instead."
+        )
+    end
+
+    --==================================================
+    -- Everything else is treated as Lua source
+    --==================================================
+
+    return ExecuteLua(content, sourceName)
+end
+
+--//==================================================
+--// Load Custom Asset
+--//==================================================
+
+Module.LoadCustomAsset = function(url: string): string?
+    if type(url) ~= "string" then
+        return ""
+    end
+
+    -- Direct Roblox asset ID
+    if IsAssetId(url) then
+        local id = url:match("%d+")
+
+        if id then
+            return "rbxassetid://" .. id
+        end
+    end
+
+    -- .rbxm / .rbxmx / other custom asset file
+    if get_custom_asset then
+
+        if url:lower():sub(1, 4) == "http" then
+
+            -- Keep the real extension.
+            -- This is important for executors/mobile custom assets.
+            local extension =
+                GetExtension(url)
+                or "bin"
+
+            local fileName =
+                "temp_" ..
+                HttpService:GenerateGUID(false) ..
+                "." ..
+                extension
+
+            local success, result = pcall(function()
+
+                local data = SafeHttpGet(url)
+
+                write_file(fileName, data)
+
+                return get_custom_asset(fileName, true)
+            end)
+
+            -- Cleanup temporary file
+            if is_file(fileName) then
+                pcall(del_file, fileName)
+            end
+
+            if success and result then
+                return result
+            end
+
+        elseif is_file(url) then
+
+            local success, result =
+                pcall(get_custom_asset, url, true)
+
+            if success and result then
+                return result
+            end
+        end
+
+    else
+        warn(
+            "[Warning]: Executor lacks 'getcustomasset'. " ..
+            "Falling back to rbxassetid when possible."
+        )
+    end
+
+    -- Final asset-ID fallback
+    if url:find("rbxassetid", 1, true) or tonumber(url) then
+        local id = url:match("%d+")
+
+        if id then
+            return "rbxassetid://" .. id
+        end
+    end
+
+    warn(
+        "[Warning]: Failed to load custom asset:\n" ..
+        tostring(url)
+    )
+
+    return ""
+end
+
+--//==================================================
+--// Load Custom Instance
+--//==================================================
+
+Module.LoadCustomInstance = function(url: string): Instance?
+    if type(url) ~= "string" then
+        return nil
+    end
+
+    -- Only treat actual Roblox model/assets as instances.
+    if not IsModelFile(url) and not IsAssetId(url) then
+        warn(
+            "[LoadCustomInstance]: Not an RBXM/asset ID:\n" ..
+            url ..
+            "\nUse Module.Require for Lua/source files."
+        )
+
+        return nil
+    end
+
+    local success, result = pcall(function()
+
+        local asset = Module.LoadCustomAsset(url)
+
+        if asset and asset ~= "" then
+            local objects = game:GetObjects(asset)
+
+            if objects and objects[1] then
+                return objects[1]
+            end
+        end
+
+        return nil
+    end)
+
+    if not success then
+        warn(
+            "[Warning]: game:GetObjects failed.\n" ..
+            "The function may be patched or unsupported by the executor."
+        )
+
+        return nil
+    end
+
+    return result
+end
+
+--//==================================================
+--// Universal Load
+--//
+--// Automatically determines:
+--//   .rbxm / .rbxmx / asset ID -> Roblox asset
+--//   .lua / .luau / .txt / .text / etc -> Lua execution
+--//==================================================
+
+Module.Load = function(source: string): any?
+    if type(source) ~= "string" then
+        error("Module.Load expects a string")
+    end
+
+    -- Roblox Asset
+    if IsAssetId(source) or IsModelFile(source) then
+        return Module.LoadCustomInstance(source)
+    end
+
+    -- Local or remote Lua/source file
+    return Module.Require(source)
+end
+
+--//==================================================
+--// Game Update
+--//==================================================
+
+Module.GetGameLastUpdate = function(): DateTime
+    local success, result = pcall(function()
+        return MarketplaceService:GetProductInfo(
+            game.PlaceId
+        ).Updated
+    end)
+
+    if success and result then
+        local dateSuccess, dateResult =
+            pcall(function()
+                return DateTime.fromIsoDate(result)
+            end)
+
+        if dateSuccess and dateResult then
+            return dateResult
+        end
+    end
+
+    return DateTime.now()
+end
+
+Module.HasGameUpdated = function(timestamp: any): boolean
+    local millis = timestampToMillis(timestamp)
+
+    if millis > 0 then
+        return
+            millis <
+            Module.GetGameLastUpdate().UnixTimestampMillis
+    end
+
+    return false
+end
+
+--//==================================================
+--// GitHub Update
+--//==================================================
+
+Module.GetGitLastUpdate = function(
+    owner: string,
+    repo: string,
+    filePath: string
+): DateTime
+
+    local url =
+        `https://api.github.com/repos/{owner}/{repo}/commits?per_page=1&path={filePath}`
+
+    local success, result = pcall(function()
+
+        local response = SafeHttpGet(url)
+
+        return HttpService:JSONDecode(response)
+    end)
+
+    if success
+        and type(result) == "table"
+        and result[1]
+        and result[1].commit
+        and result[1].commit.committer
+        and result[1].commit.committer.date
+    then
+
+        local dateSuccess, dateResult =
+            pcall(function()
+                return DateTime.fromIsoDate(
+                    result[1].commit.committer.date
+                )
+            end)
+
+        if dateSuccess and dateResult then
+            return dateResult
+        end
+    end
+
+    warn(
+        "[Warning]: Failed to fetch Git update.\n" ..
+        "The GitHub API may be rate-limited."
+    )
+
+    return DateTime.now()
+end
+
+Module.HasGitUpdated = function(
+    owner: string,
+    repo: string,
+    filePath: string,
+    timestamp: any
+): boolean
+
+    local millis = timestampToMillis(timestamp)
+
+    if millis > 0 then
+        return
+            millis <
+            Module.GetGitLastUpdate(
+                owner,
+                repo,
+                filePath
+            ).UnixTimestampMillis
+    end
+
+    return false
+end
+
+--//==================================================
+--// Number Utility
+--//==================================================
+
+Module.TruncateNumber = function(
+    num: number,
+    decimals: number
+): number
+
+    local shift =
+        10 ^
+        (decimals and math.max(decimals, 0) or 0)
+
+    return math.floor(num * shift) / shift
+end
+
+--//==================================================
+--// Global Implementation
+--//==================================================
+
+local genv =
+    getgenv and getgenv() or _G
+
+for name, func in next, Module do
+    if type(func) == "function" then
+        genv[name] = func
+    end
+end
+
+return Module
