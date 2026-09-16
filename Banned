@@ -11,7 +11,7 @@
 
 if getgenv().VynixuEntitySpawnerV2 then return getgenv().VynixuEntitySpawnerV2 end
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ngunhuchochet6/entitycustomhh/refs/heads/main/init.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/titanic514/Customentity.lua/refs/heads/main/Jsjajf"))()
 
 -- \\ Services // --
 
