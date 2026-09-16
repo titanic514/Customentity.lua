@@ -12,7 +12,7 @@
          ]]
 
       2. Raw Lua URL:
-         Source = "https://raw.githubusercontent.com/user/repo/main/entity.lua"
+         Source = "https://raw.githubusercontent.com/titanic514/Customentity.lua/refs/heads/main/Jdkjsfjsjsj"
 
     The Lua source MUST return:
       - Model
