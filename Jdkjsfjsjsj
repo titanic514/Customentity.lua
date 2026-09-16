@@ -1,0 +1,929 @@
+--[[
+    Source.lua
+    Roblox XML / RBXMX -> Model loader
+
+    API:
+
+        local Source = loadstring(...)
+        local model = Source.execute(source, "MyModel")
+
+    or:
+
+        local model = Source:execute(source, "MyModel")
+
+    Optional external references:
+
+        Source:AddReferent("SomeName", instance)
+
+    IMPORTANT:
+        This module does NOT download anything.
+        This module does NOT require an asset ID.
+        This module does NOT contain a model.
+        This module does NOT require a model URL.
+
+        The caller supplies the source text.
+]]
+
+local Source = {}
+
+----------------------------------------------------------------
+-- STATE
+----------------------------------------------------------------
+
+local settings = {
+    ConserveMemory = true,
+    AutoParent = true
+}
+
+local referents = {
+    DataModel = game,
+    game = game,
+    Workspace = workspace,
+    workspace = workspace
+}
+
+local sharedStrings = {}
+
+----------------------------------------------------------------
+-- HELPERS
+----------------------------------------------------------------
+
+local function splitWords(value)
+    local result = {}
+
+    for word in tostring(value):gmatch("%S+") do
+        result[#result + 1] = word
+    end
+
+    return result
+end
+
+local function number(value, default)
+    value = tonumber(value)
+
+    if value == nil then
+        return default or 0
+    end
+
+    return value
+end
+
+local function boolean(value)
+    return tostring(value):lower() == "true"
+end
+
+local function clampInt32(value)
+    return math.clamp(
+        math.round(number(value)),
+        -2147483648,
+        2147483647
+    )
+end
+
+local function clampInt64(value)
+    return math.clamp(
+        math.round(number(value)),
+        -4503599627370497,
+        4503599627370496
+    )
+end
+
+----------------------------------------------------------------
+-- BASE64
+----------------------------------------------------------------
+
+local BASE64_ALPHABET =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ..
+    "abcdefghijklmnopqrstuvwxyz" ..
+    "0123456789+/"
+
+local BASE64_LOOKUP = {}
+
+for i = 1, #BASE64_ALPHABET do
+    BASE64_LOOKUP[BASE64_ALPHABET:sub(i, i)] = i - 1
+end
+
+local function base64Decode(input)
+    input = tostring(input)
+    input = input:gsub("[^%w%+/=]", "")
+
+    local output = {}
+
+    local i = 1
+
+    while i <= #input do
+        local a = BASE64_LOOKUP[input:sub(i, i)] or 0
+        local b = BASE64_LOOKUP[input:sub(i + 1, i + 1)] or 0
+        local c = BASE64_LOOKUP[input:sub(i + 2, i + 2)] or 0
+        local d = BASE64_LOOKUP[input:sub(i + 3, i + 3)] or 0
+
+        local n =
+            a * 262144 +
+            b * 4096 +
+            c * 64 +
+            d
+
+        local x = math.floor(n / 65536) % 256
+        local y = math.floor(n / 256) % 256
+        local z = n % 256
+
+        output[#output + 1] = string.char(x)
+
+        if input:sub(i + 2, i + 2) ~= "=" then
+            output[#output + 1] = string.char(y)
+        end
+
+        if input:sub(i + 3, i + 3) ~= "=" then
+            output[#output + 1] = string.char(z)
+        end
+
+        i += 4
+    end
+
+    return table.concat(output)
+end
+
+----------------------------------------------------------------
+-- HEX
+----------------------------------------------------------------
+
+local function hexDecode(value)
+    value = tostring(value)
+
+    return (
+        value:gsub("%x%x", function(pair)
+            return string.char(tonumber(pair, 16))
+        end)
+    )
+end
+
+----------------------------------------------------------------
+-- XML ATTRIBUTE PARSER
+----------------------------------------------------------------
+
+local function parseAttributes(text)
+    local attributes = {}
+
+    for key, quote, value in tostring(text):gmatch(
+        "([%w:_%-]+)%s*=%s*([\"'])(.-)%2"
+    ) do
+        attributes[key] = value
+    end
+
+    return attributes
+end
+
+----------------------------------------------------------------
+-- XML PARSER
+----------------------------------------------------------------
+
+local function parseXML(source)
+    assert(
+        type(source) == "string",
+        "Source.execute: Source must be a string"
+    )
+
+    local root = {
+        Type = nil,
+        Text = nil,
+        Attributes = {},
+        Contents = {},
+        Parent = nil
+    }
+
+    local stack = { root }
+    local position = 1
+
+    while true do
+        local startPos,
+            endPos,
+            closing,
+            tagName,
+            attributeText,
+            selfClosing =
+            source:find(
+                "<(/?)([%w:_%-]+)(.-)(/?)>",
+                position
+            )
+
+        if not startPos then
+            break
+        end
+
+        local text = source:sub(
+            position,
+            startPos - 1
+        )
+
+        local cdata = text:match(
+            "<!%[CDATA%[(.-)%]%]>"
+        )
+
+        if cdata then
+            stack[#stack].Text = cdata
+        else
+            local cleanText = text:match("^%s*(.-)%s*$")
+
+            if cleanText ~= "" then
+                stack[#stack].Text = cleanText
+            end
+        end
+
+        if selfClosing == "/" then
+
+            local node = {
+                Type = tagName,
+                Text = nil,
+                Attributes = parseAttributes(attributeText),
+                Contents = {},
+                selfCloses = true,
+                Parent = stack[#stack]
+            }
+
+            table.insert(
+                stack[#stack].Contents,
+                node
+            )
+
+        elseif closing == "" then
+
+            local node = {
+                Type = tagName,
+                Text = nil,
+                Attributes = parseAttributes(attributeText),
+                Contents = {},
+                Parent = stack[#stack]
+            }
+
+            table.insert(
+                stack[#stack].Contents,
+                node
+            )
+
+            table.insert(stack, node)
+
+        else
+
+            assert(
+                #stack > 1,
+                "Unexpected closing tag </"
+                    .. tagName
+                    .. ">"
+            )
+
+            local node = table.remove(stack)
+
+            assert(
+                node.Type == tagName,
+                "Expected </"
+                    .. tostring(node.Type)
+                    .. "> but received </"
+                    .. tostring(tagName)
+                    .. ">"
+            )
+
+        end
+
+        position = endPos + 1
+    end
+
+    local remaining = source:sub(position)
+
+    if remaining:match("%S") then
+        stack[#stack].Text = remaining
+    end
+
+    assert(
+        #stack == 1,
+        "Unclosed XML tag: <"
+            .. tostring(stack[#stack].Type)
+            .. ">"
+    )
+
+    return root
+end
+
+----------------------------------------------------------------
+-- CONTENT TYPES
+----------------------------------------------------------------
+
+local Types = {}
+
+----------------------------------------------------------------
+-- BASIC TYPES
+----------------------------------------------------------------
+
+Types.bool = function(tag, object)
+    object[tag.Attributes.name] =
+        boolean(tag.Text)
+end
+
+Types.string = function(tag, object)
+    object[tag.Attributes.name] =
+        tostring(tag.Text or "")
+end
+
+Types.ProtectedString = function(tag, object)
+    object[tag.Attributes.name] =
+        tostring(tag.Text or "")
+end
+
+Types.BinaryString = function(tag, object)
+    object[tag.Attributes.name] =
+        base64Decode(tag.Text or "")
+end
+
+Types.SharedString = function(tag, object)
+    local key = base64Decode(tag.Text or "")
+
+    object[tag.Attributes.name] =
+        sharedStrings[key]
+end
+
+Types.UniqueId = function(tag, object)
+    object[tag.Attributes.name] =
+        hexDecode(tag.Text or "")
+end
+
+Types.float = function(tag, object)
+    object[tag.Attributes.name] =
+        number(tag.Text)
+end
+
+Types.double = function(tag, object)
+    object[tag.Attributes.name] =
+        number(tag.Text)
+end
+
+Types.int = function(tag, object)
+    object[tag.Attributes.name] =
+        clampInt32(tag.Text)
+end
+
+Types.int64 = function(tag, object)
+    object[tag.Attributes.name] =
+        clampInt64(tag.Text)
+end
+
+Types.token = function(tag, object)
+    object[tag.Attributes.name] =
+        math.round(number(tag.Text))
+end
+
+Types.BrickColor = function(tag, object)
+    object[tag.Attributes.name] =
+        math.round(number(tag.Text))
+end
+
+----------------------------------------------------------------
+-- VECTOR TYPES
+----------------------------------------------------------------
+
+local function childMap(tag)
+    local result = {}
+
+    for _, child in ipairs(tag.Contents or {}) do
+        if child.Type then
+            result[child.Type] = child
+        end
+    end
+
+    return result
+end
+
+Types.Vector3 = function(tag, object)
+    local axes = childMap(tag)
+
+    object[tag.Attributes.name] = Vector3.new(
+        number(axes.X and axes.X.Text),
+        number(axes.Y and axes.Y.Text),
+        number(axes.Z and axes.Z.Text)
+    )
+end
+
+Types.Vector2 = function(tag, object)
+    local axes = childMap(tag)
+
+    object[tag.Attributes.name] = Vector2.new(
+        number(axes.X and axes.X.Text),
+        number(axes.Y and axes.Y.Text)
+    )
+end
+
+Types.Vector3int16 = function(tag, object)
+    local axes = childMap(tag)
+
+    object[tag.Attributes.name] =
+        Vector3int16.new(
+            math.round(number(axes.X and axes.X.Text)),
+            math.round(number(axes.Y and axes.Y.Text)),
+            math.round(number(axes.Z and axes.Z.Text))
+        )
+end
+
+Types.Vector2int16 = function(tag, object)
+    local axes = childMap(tag)
+
+    object[tag.Attributes.name] =
+        Vector2int16.new(
+            math.round(number(axes.X and axes.X.Text)),
+            math.round(number(axes.Y and axes.Y.Text))
+        )
+end
+
+----------------------------------------------------------------
+-- COLOR
+----------------------------------------------------------------
+
+Types.Color3 = function(tag, object)
+    if tag.Text and tag.Text ~= "" then
+
+        local value =
+            tonumber(tag.Text) or 0
+
+        object[tag.Attributes.name] =
+            Color3.fromRGB(
+                bit32.extract(value, 16, 8),
+                bit32.extract(value, 8, 8),
+                bit32.extract(value, 0, 8)
+            )
+
+        return
+    end
+
+    local colors = childMap(tag)
+
+    object[tag.Attributes.name] =
+        Color3.new(
+            number(colors.R and colors.R.Text),
+            number(colors.G and colors.G.Text),
+            number(colors.B and colors.B.Text)
+        )
+end
+
+Types.Color3uint8 = function(tag, object)
+    local value =
+        tonumber(tag.Text or 0)
+
+    object[tag.Attributes.name] =
+        Color3.fromRGB(
+            bit32.extract(value, 16, 8),
+            bit32.extract(value, 8, 8),
+            bit32.extract(value, 0, 8)
+        )
+end
+
+----------------------------------------------------------------
+-- CFRAME
+----------------------------------------------------------------
+
+Types.CoordinateFrame = function(tag, object)
+    local axes = childMap(tag)
+
+    object[tag.Attributes.name] =
+        CFrame.new(
+            number(axes.X and axes.X.Text),
+            number(axes.Y and axes.Y.Text),
+            number(axes.Z and axes.Z.Text),
+
+            number(axes.R00 and axes.R00.Text),
+            number(axes.R01 and axes.R01.Text),
+            number(axes.R02 and axes.R02.Text),
+
+            number(axes.R10 and axes.R10.Text),
+            number(axes.R11 and axes.R11.Text),
+            number(axes.R12 and axes.R12.Text),
+
+            number(axes.R20 and axes.R20.Text),
+            number(axes.R21 and axes.R21.Text),
+            number(axes.R22 and axes.R22.Text)
+        )
+end
+
+Types.OptionalCoordinateFrame = function(tag, object)
+    local child = tag.Contents
+        and tag.Contents[1]
+
+    if not child then
+        object[tag.Attributes.name] =
+            CFrame.identity
+        return
+    end
+
+    if child.Type == "CFrame" then
+        Types.CoordinateFrame(child, object)
+    else
+        object[tag.Attributes.name] =
+            CFrame.identity
+    end
+end
+
+----------------------------------------------------------------
+-- UDim
+----------------------------------------------------------------
+
+Types.UDim = function(tag, object)
+    local values = childMap(tag)
+
+    object[tag.Attributes.name] =
+        UDim.new(
+            number(values.S and values.S.Text),
+            math.round(
+                number(values.O and values.O.Text)
+            )
+        )
+end
+
+Types.UDim2 = function(tag, object)
+    local values = childMap(tag)
+
+    object[tag.Attributes.name] =
+        UDim2.new(
+            number(values.XS and values.XS.Text),
+            math.round(
+                number(values.XO and values.XO.Text)
+            ),
+            number(values.YS and values.YS.Text),
+            math.round(
+                number(values.YO and values.YO.Text)
+            )
+        )
+end
+
+----------------------------------------------------------------
+-- NUMBER RANGE
+----------------------------------------------------------------
+
+Types.NumberRange = function(tag, object)
+    local values = splitWords(tag.Text or "")
+
+    object[tag.Attributes.name] =
+        NumberRange.new(
+            number(values[1]),
+            number(values[2], number(values[1]))
+        )
+end
+
+----------------------------------------------------------------
+-- NUMBER SEQUENCE
+----------------------------------------------------------------
+
+Types.NumberSequence = function(tag, object)
+    local values = splitWords(tag.Text or "")
+    local points = {}
+
+    for i = 1, #values, 3 do
+        if values[i + 2] then
+            points[#points + 1] =
+                NumberSequenceKeypoint.new(
+                    number(values[i]),
+                    number(values[i + 1]),
+                    number(values[i + 2])
+                )
+        end
+    end
+
+    object[tag.Attributes.name] =
+        NumberSequence.new(points)
+end
+
+----------------------------------------------------------------
+-- COLOR SEQUENCE
+----------------------------------------------------------------
+
+Types.ColorSequence = function(tag, object)
+    local values = splitWords(tag.Text or "")
+    local points = {}
+
+    for i = 1, #values, 4 do
+        if values[i + 3] then
+            points[#points + 1] =
+                ColorSequenceKeypoint.new(
+                    number(values[i]),
+                    number(values[i + 1]),
+                    number(values[i + 2])
+                )
+        end
+    end
+
+    object[tag.Attributes.name] =
+        ColorSequence.new(points)
+end
+
+----------------------------------------------------------------
+-- PHYSICAL PROPERTIES
+----------------------------------------------------------------
+
+Types.PhysicalProperties = function(tag, object)
+    local values = childMap(tag)
+
+    if values.CustomPhysics
+        and boolean(values.CustomPhysics.Text)
+    then
+
+        object[tag.Attributes.name] =
+            PhysicalProperties.new(
+                number(values.Density and values.Density.Text),
+                number(values.Friction and values.Friction.Text),
+                number(values.Elasticity and values.Elasticity.Text),
+                number(
+                    values.FrictionWeight
+                    and values.FrictionWeight.Text
+                ),
+                number(
+                    values.ElasticityWeight
+                    and values.ElasticityWeight.Text
+                )
+            )
+    end
+end
+
+----------------------------------------------------------------
+-- FACES
+----------------------------------------------------------------
+
+Types.Faces = function(tag, object)
+    local values = childMap(tag)
+
+    local mask =
+        number(values.faces and values.faces.Text)
+
+    object[tag.Attributes.name] =
+        Faces.new(
+            mask % 2 == 1,
+            math.floor(mask / 2) % 2 == 1,
+            math.floor(mask / 4) % 2 == 1,
+            math.floor(mask / 8) % 2 == 1,
+            math.floor(mask / 16) % 2 == 1,
+            math.floor(mask / 32) % 2 == 1
+        )
+end
+
+----------------------------------------------------------------
+-- AXES
+----------------------------------------------------------------
+
+Types.Axes = function(tag, object)
+    local values = childMap(tag)
+    local mask = number(values.axes and values.axes.Text)
+
+    object[tag.Attributes.name] =
+        Axes.new(
+            mask % 2 == 1,
+            math.floor(mask / 2) % 2 == 1,
+            math.floor(mask / 4) % 2 == 1
+        )
+end
+
+----------------------------------------------------------------
+-- REFERENCE
+----------------------------------------------------------------
+
+Types.Ref = function(tag, object)
+    local name = tostring(tag.Text or "")
+    local target = referents[name]
+
+    if target then
+        object[tag.Attributes.name] = target
+        return
+    end
+
+    task.spawn(function()
+        while true do
+            local instance = referents[name]
+
+            if instance then
+                object[tag.Attributes.name] = instance
+                break
+            end
+
+            task.wait()
+        end
+    end)
+end
+
+----------------------------------------------------------------
+-- CONTENT
+----------------------------------------------------------------
+
+Types.Content = function(tag, object)
+    local child = tag.Contents
+        and tag.Contents[1]
+
+    if not child then
+        return
+    end
+
+    local handler = Types[child.Type]
+
+    if handler then
+        handler(child, object)
+    end
+end
+
+----------------------------------------------------------------
+-- SHARED STRINGS
+----------------------------------------------------------------
+
+Types.SharedStrings = function(tag)
+    for _, child in ipairs(tag.Contents or {}) do
+        if child.Type == "SharedString" then
+
+            local key =
+                base64Decode(
+                    child.Attributes.md5 or ""
+                )
+
+            sharedStrings[key] =
+                base64Decode(child.Text or "")
+        end
+    end
+end
+
+----------------------------------------------------------------
+-- SETTINGS
+----------------------------------------------------------------
+
+Types.Settings = function(tag)
+    for _, child in ipairs(tag.Contents or {}) do
+        local handler = Types[child.Type]
+
+        if handler then
+            local temporary = {}
+
+            handler(child, temporary)
+
+            settings[
+                child.Attributes.name
+            ] = temporary[
+                child.Attributes.name
+            ]
+        end
+    end
+end
+
+----------------------------------------------------------------
+-- ITEM
+----------------------------------------------------------------
+
+Types.Item = function(tag, parent)
+    local className =
+        tag.Attributes.class
+
+    assert(
+        type(className) == "string"
+            and className ~= "",
+        "Item is missing a class attribute"
+    )
+
+    local instance =
+        Instance.new(className)
+
+    tag.Instance = instance
+
+    local referent =
+        tag.Attributes.referent
+
+    if referent then
+        referents[referent] = instance
+
+        if settings.ConserveMemory then
+            pcall(function()
+                instance.Destroying:Once(function()
+                    referents[referent] = nil
+                end)
+            end)
+        end
+    end
+
+    local properties
+
+    for _, child in ipairs(tag.Contents or {}) do
+        if child.Type == "Properties" then
+            properties = child
+            break
+        end
+    end
+
+    if properties then
+        for _, property in ipairs(
+            properties.Contents or {}
+        ) do
+
+            local handler =
+                Types[property.Type]
+
+            if handler then
+                pcall(
+                    handler,
+                    property,
+                    instance
+                )
+            end
+        end
+    end
+
+    if settings.AutoParent
+        and not instance.Parent
+        and not instance:IsA("Attachment")
+    then
+        instance.Parent = parent
+    end
+
+    return instance
+end
+
+----------------------------------------------------------------
+-- RECURSIVE EXECUTION
+----------------------------------------------------------------
+
+local function executeTree(
+    tag,
+    model,
+    first
+)
+    if first then
+        local firstChild =
+            tag.Contents
+            and tag.Contents[1]
+
+        assert(
+            firstChild
+                and firstChild.Type == "roblox",
+            "Invalid source: expected <roblox> root"
+        )
+    end
+
+    if tag.Type then
+        local handler =
+            Types[tag.Type]
+
+        if handler then
+            handler(tag, model)
+        end
+    end
+
+    for _, child in ipairs(tag.Contents or {}) do
+        if child.Type ~= "Properties" then
+            executeTree(
+                child,
+                model,
+                false
+            )
+        end
+    end
+end
+
+----------------------------------------------------------------
+-- PUBLIC API
+----------------------------------------------------------------
+
+function Source.execute(source, name)
+    assert(
+        type(source) == "string",
+        "Source.execute(Source, Name): Source must be a string"
+    )
+
+    local model =
+        Instance.new("Model")
+
+    model.Name =
+        tostring(
+            name
+            or "GeneratedModel"
+        )
+
+    local parsed =
+        parseXML(source)
+
+    executeTree(
+        parsed,
+        model,
+        true
+    )
+
+    return model
+end
+
+function Source:AddReferent(name, instance)
+    assert(
+        typeof(instance) == "Instance",
+        "AddReferent expected an Instance"
+    )
+
+    referents[
+        tostring(name)
+    ] = instance
+end
+
+function Source:SetSetting(name, value)
+    if settings[name] ~= nil then
+        settings[name] = value
+    end
+end
+
+function Source:GetSetting(name)
+    return settings[name]
+end
+
+return Source
