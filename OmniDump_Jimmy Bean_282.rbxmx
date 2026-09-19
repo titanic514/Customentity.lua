@@ -1,0 +1,1067 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+    <Meta name="ExplicitAutoJoints">true</Meta>
+    <Item class="Model" referent="RBX1">
+      <Properties>
+        <string name="Name">[DUMP_TARGET] Jimmy Bean</string>
+        <Ref name="PrimaryPart">RBX97</Ref>
+      </Properties>
+    <Item class="Script" referent="RBX2">
+      <Properties>
+        <string name="Name">Death Script</string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="RBX3">
+      <Properties>
+        <string name="Name">Flinch</string>
+      </Properties>
+    <Item class="Animation" referent="RBX4">
+      <Properties>
+        <string name="Name">1</string>
+        <Content name="AnimationId"><url>rbxassetid://13915847854</url></Content>
+      </Properties>
+    </Item>
+    <Item class="Animation" referent="RBX5">
+      <Properties>
+        <string name="Name">2</string>
+        <Content name="AnimationId"><url>rbxassetid://13915852039</url></Content>
+      </Properties>
+    </Item>
+    <Item class="Animation" referent="RBX6">
+      <Properties>
+        <string name="Name">3</string>
+        <Content name="AnimationId"><url>rbxassetid://13915854955</url></Content>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Script" referent="RBX7">
+      <Properties>
+        <string name="Name">Face Change On Death</string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="RBX8">
+      <Properties>
+        <string name="Name">DropTools</string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="RBX9">
+      <Properties>
+        <string name="Name">ZombieScript</string>
+      </Properties>
+    <Item class="LocalScript" referent="RBX10">
+      <Properties>
+        <string name="Name">SeeArms</string>
+      </Properties>
+    </Item>
+    <Item class="ScreenGui" referent="RBX11">
+      <Properties>
+        <string name="Name">InfectedEffect</string>
+      </Properties>
+    <Item class="ImageLabel" referent="RBX12">
+      <Properties>
+        <string name="Name">InfectedOverlay</string>
+      </Properties>
+    <Item class="LocalScript" referent="RBX13">
+      <Properties>
+        <string name="Name">Animation</string>
+      </Properties>
+    </Item>
+    </Item>
+    </Item>
+    </Item>
+    <Item class="Script" referent="RBX14">
+      <Properties>
+        <string name="Name">Landing</string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="RBX15">
+      <Properties>
+        <string name="Name">_fallDamage</string>
+      </Properties>
+    <Item class="Animation" referent="RBX16">
+      <Properties>
+        <string name="Name">Animation</string>
+        <Content name="AnimationId"><url>rbxassetid://10576619377</url></Content>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Script" referent="RBX17">
+      <Properties>
+        <string name="Name">Animate</string>
+      </Properties>
+    <Item class="StringValue" referent="RBX18">
+      <Properties>
+        <string name="Name">climb</string>
+        <string name="Value"></string>
+      </Properties>
+    <Item class="Animation" referent="RBX19">
+      <Properties>
+        <string name="Name">ClimbAnim</string>
+        <Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180436334</url></Content>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="StringValue" referent="RBX20">
+      <Properties>
+        <string name="Name">fall</string>
+        <string name="Value"></string>
+      </Properties>
+    <Item class="Animation" referent="RBX21">
+      <Properties>
+        <string name="Name">FallAnim</string>
+        <Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180436148</url></Content>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="StringValue" referent="RBX22">
+      <Properties>
+        <string name="Name">idle</string>
+        <string name="Value"></string>
+      </Properties>
+    <Item class="Animation" referent="RBX23">
+      <Properties>
+        <string name="Name">Animation1</string>
+        <Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180435571</url></Content>
+      </Properties>
+    <Item class="NumberValue" referent="RBX24">
+      <Properties>
+        <string name="Name">Weight</string>
+        <float name="Value">9.000000</float>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Animation" referent="RBX25">
+      <Properties>
+        <string name="Name">Animation2</string>
+        <Content name="AnimationId"><url>rbxassetid://12209598034</url></Content>
+      </Properties>
+    <Item class="NumberValue" referent="RBX26">
+      <Properties>
+        <string name="Name">Weight</string>
+        <float name="Value">1.000000</float>
+      </Properties>
+    </Item>
+    </Item>
+    </Item>
+    <Item class="StringValue" referent="RBX27">
+      <Properties>
+        <string name="Name">jump</string>
+        <string name="Value"></string>
+      </Properties>
+    <Item class="Animation" referent="RBX28">
+      <Properties>
+        <string name="Name">JumpAnim</string>
+        <Content name="AnimationId"><url>http://www.roblox.com/asset/?id=125750702</url></Content>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="StringValue" referent="RBX29">
+      <Properties>
+        <string name="Name">run</string>
+        <string name="Value"></string>
+      </Properties>
+    <Item class="Animation" referent="RBX30">
+      <Properties>
+        <string name="Name">RunAnim</string>
+        <Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180426354</url></Content>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="StringValue" referent="RBX31">
+      <Properties>
+        <string name="Name">sit</string>
+        <string name="Value"></string>
+      </Properties>
+    <Item class="Animation" referent="RBX32">
+      <Properties>
+        <string name="Name">SitAnim</string>
+        <Content name="AnimationId"><url>http://www.roblox.com/asset/?id=178130996</url></Content>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="StringValue" referent="RBX33">
+      <Properties>
+        <string name="Name">toolnone</string>
+        <string name="Value"></string>
+      </Properties>
+    <Item class="Animation" referent="RBX34">
+      <Properties>
+        <string name="Name">ToolNoneAnim</string>
+        <Content name="AnimationId"><url>http://www.roblox.com/asset/?id=182393478</url></Content>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="StringValue" referent="RBX35">
+      <Properties>
+        <string name="Name">walk</string>
+        <string name="Value"></string>
+      </Properties>
+    <Item class="Animation" referent="RBX36">
+      <Properties>
+        <string name="Name">WalkAnim</string>
+        <Content name="AnimationId"><url>http://www.roblox.com/asset/?id=180426354</url></Content>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="NumberValue" referent="RBX37">
+      <Properties>
+        <string name="Name">ScaleDampeningPercent</string>
+        <float name="Value">1.000000</float>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Script" referent="RBX38">
+      <Properties>
+        <string name="Name">NPCDeathSounds</string>
+      </Properties>
+    <Item class="Folder" referent="RBX39">
+      <Properties>
+        <string name="Name">ScreamsSoundsFolder</string>
+      </Properties>
+    <Item class="Sound" referent="RBX40">
+      <Properties>
+        <string name="Name">ScreamSound0</string>
+        <Content name="SoundId"><url>rbxassetid://8399859908</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX41">
+      <Properties>
+        <string name="Name">ScreamSound4</string>
+        <Content name="SoundId"><url>rbxassetid://6467894576</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX42">
+      <Properties>
+        <string name="Name">ScreamSound3</string>
+        <Content name="SoundId"><url>rbxassetid://5000037880</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX43">
+      <Properties>
+        <string name="Name">ScreamSound1</string>
+        <Content name="SoundId"><url>rbxassetid://8179297413</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX44">
+      <Properties>
+        <string name="Name">ScreamSound2</string>
+        <Content name="SoundId"><url>rbxassetid://4465348490</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Folder" referent="RBX45">
+      <Properties>
+        <string name="Name">GoreSoundsFolder</string>
+      </Properties>
+    <Item class="Sound" referent="RBX46">
+      <Properties>
+        <string name="Name">GoreSound2</string>
+        <Content name="SoundId"><url>rbxassetid://8004093350</url></Content>
+        <float name="Volume">0.350000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX47">
+      <Properties>
+        <string name="Name">GoreSound1</string>
+        <Content name="SoundId"><url>rbxassetid://8004093065</url></Content>
+        <float name="Volume">0.350000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    </Item>
+    </Item>
+    <Item class="Script" referent="RBX48">
+      <Properties>
+        <string name="Name">Humanoid Wander Script</string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="RBX49">
+      <Properties>
+        <string name="Name">R6_NPC_Ragdoll_Death</string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="RBX50">
+      <Properties>
+        <string name="Name">ImpactSounds</string>
+      </Properties>
+    <Item class="Script" referent="RBX51">
+      <Properties>
+        <string name="Name">ImpactSound</string>
+      </Properties>
+    <Item class="Sound" referent="RBX52">
+      <Properties>
+        <string name="Name">Impact1</string>
+        <Content name="SoundId"><url>rbxassetid://463359064</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX53">
+      <Properties>
+        <string name="Name">Impact2</string>
+        <Content name="SoundId"><url>rbxassetid://463358992</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX54">
+      <Properties>
+        <string name="Name">Impact3</string>
+        <Content name="SoundId"><url>rbxassetid://463359093</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX55">
+      <Properties>
+        <string name="Name">Impact4</string>
+        <Content name="SoundId"><url>rbxassetid://463358983</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX56">
+      <Properties>
+        <string name="Name">Impact5</string>
+        <Content name="SoundId"><url>rbxassetid://463359020</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX57">
+      <Properties>
+        <string name="Name">Impact</string>
+        <Content name="SoundId"><url>rbxassetid://463359041</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX58">
+      <Properties>
+        <string name="Name">Impact6</string>
+        <Content name="SoundId"><url>rbxassetid://463359020</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX59">
+      <Properties>
+        <string name="Name">Impact7</string>
+        <Content name="SoundId"><url>rbxassetid://7430506145</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX60">
+      <Properties>
+        <string name="Name">Impact8</string>
+        <Content name="SoundId"><url>rbxassetid://7434241797</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX61">
+      <Properties>
+        <string name="Name">Impact9</string>
+        <Content name="SoundId"><url>rbxassetid://7065398818</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX62">
+      <Properties>
+        <string name="Name">Impact10</string>
+        <Content name="SoundId"><url>rbxassetid://7240240116</url></Content>
+        <float name="Volume">1.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    </Item>
+    </Item>
+    <Item class="Script" referent="RBX63">
+      <Properties>
+        <string name="Name">explode</string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="RBX64">
+      <Properties>
+        <string name="Name">Respawn</string>
+      </Properties>
+    </Item>
+    <Item class="Shirt" referent="RBX65">
+      <Properties>
+        <string name="Name">Shirt</string>
+      </Properties>
+    </Item>
+    <Item class="Configuration" referent="RBX66">
+      <Properties>
+        <string name="Name">Configs</string>
+      </Properties>
+    <Item class="BoolValue" referent="RBX67">
+      <Properties>
+        <string name="Name">Infects</string>
+        <bool name="Value">false</bool>
+      </Properties>
+    </Item>
+    <Item class="IntValue" referent="RBX68">
+      <Properties>
+        <string name="Name">InfectionMinimum</string>
+      </Properties>
+    </Item>
+    <Item class="IntValue" referent="RBX69">
+      <Properties>
+        <string name="Name">Damage</string>
+      </Properties>
+    </Item>
+    <Item class="BoolValue" referent="RBX70">
+      <Properties>
+        <string name="Name">Respawns</string>
+        <bool name="Value">false</bool>
+      </Properties>
+    </Item>
+    <Item class="BoolValue" referent="RBX71">
+      <Properties>
+        <string name="Name">DropToolsOnEquip</string>
+        <bool name="Value">true</bool>
+      </Properties>
+    </Item>
+    <Item class="IntValue" referent="RBX72">
+      <Properties>
+        <string name="Name">RespawnTime</string>
+      </Properties>
+    </Item>
+    <Item class="BoolValue" referent="RBX73">
+      <Properties>
+        <string name="Name">CantHoldTools</string>
+        <bool name="Value">true</bool>
+      </Properties>
+    </Item>
+    <Item class="IntValue" referent="RBX74">
+      <Properties>
+        <string name="Name">AttackRange</string>
+      </Properties>
+    </Item>
+    <Item class="IntValue" referent="RBX75">
+      <Properties>
+        <string name="Name">AttackCooldown</string>
+      </Properties>
+    </Item>
+    <Item class="IntValue" referent="RBX76">
+      <Properties>
+        <string name="Name">KnockbackHor</string>
+      </Properties>
+    </Item>
+    <Item class="IntValue" referent="RBX77">
+      <Properties>
+        <string name="Name">KnockbackVert</string>
+      </Properties>
+    </Item>
+    <Item class="IntValue" referent="RBX78">
+      <Properties>
+        <string name="Name">SpeedAfterInfect</string>
+      </Properties>
+    </Item>
+    <Item class="BoolValue" referent="RBX79">
+      <Properties>
+        <string name="Name">ChasesNPCs</string>
+        <bool name="Value">true</bool>
+      </Properties>
+    </Item>
+    <Item class="Folder" referent="RBX80">
+      <Properties>
+        <string name="Name">Sounds</string>
+      </Properties>
+    <Item class="Sound" referent="RBX81">
+      <Properties>
+        <string name="Name">Attack1</string>
+        <Content name="SoundId"><url>rbxassetid://9117969892</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.200000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX82">
+      <Properties>
+        <string name="Name">Attack2</string>
+        <Content name="SoundId"><url>rbxassetid://9117969892</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">0.800000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX83">
+      <Properties>
+        <string name="Name">Groan1</string>
+        <Content name="SoundId"><url>rbxassetid://9120004908</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX84">
+      <Properties>
+        <string name="Name">Groan2</string>
+        <Content name="SoundId"><url>rbxassetid://9120005127</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX85">
+      <Properties>
+        <string name="Name">Groan3</string>
+        <Content name="SoundId"><url>rbxassetid://9120005123</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX86">
+      <Properties>
+        <string name="Name">Groan4</string>
+        <Content name="SoundId"><url>rbxassetid://9065250436</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX87">
+      <Properties>
+        <string name="Name">Groan5</string>
+        <Content name="SoundId"><url>rbxassetid://8152780685</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX88">
+      <Properties>
+        <string name="Name">Groan6</string>
+        <Content name="SoundId"><url>rbxassetid://5274463739</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX89">
+      <Properties>
+        <string name="Name">Groan7</string>
+        <Content name="SoundId"><url>rbxassetid://4809574295</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="BoolValue" referent="RBX90">
+      <Properties>
+        <string name="Name">InstantInfect</string>
+        <bool name="Value">false</bool>
+      </Properties>
+    </Item>
+    <Item class="Animation" referent="RBX91">
+      <Properties>
+        <string name="Name">AttackAnim</string>
+        <Content name="AnimationId"><url>rbxassetid://10960829709</url></Content>
+      </Properties>
+    </Item>
+    <Item class="Animation" referent="RBX92">
+      <Properties>
+        <string name="Name">ArmsAnim</string>
+        <Content name="AnimationId"><url>rbxassetid://4807824915</url></Content>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Humanoid" referent="RBX93">
+      <Properties>
+        <string name="Name">Humanoid</string>
+      </Properties>
+    <Item class="Animator" referent="RBX94">
+      <Properties>
+        <string name="Name">Animator</string>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Part" referent="RBX95">
+      <Properties>
+        <string name="Name">Right Leg</string>
+        <Vector3 name="Size"><X>1.883127</X><Y>3.766254</Y><Z>1.883127</Z></Vector3>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">true</bool>
+        <float name="Transparency">1.000000</float>
+        <CoordinateFrame name="CFrame">
+            <X>-69.691040</X><Y>1681.875610</Y><Z>28730.875000</Z>
+            <R00>0.839071</R00><R01>0.278454</R01><R02>-0.467358</R02>
+            <R10>0.000000</R10><R11>0.859079</R11><R12>0.511843</R12>
+            <R20>0.544022</R20><R21>-0.429473</R21><R22>0.720828</R22>
+        </CoordinateFrame>
+        <int name="Color3int32">10724005</int>
+      </Properties>
+    <Item class="Attachment" referent="RBX96">
+      <Properties>
+        <string name="Name">TorsoToRightLeg1</string>
+        <CoordinateFrame name="CFrame">
+            <X>0.000000</X><Y>1.000000</Y><Z>0.000000</Z>
+            <R00>1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>0.000000</R20><R21>0.000000</R21><R22>1.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Part" referent="RBX97">
+      <Properties>
+        <string name="Name">HumanoidRootPart</string>
+        <Vector3 name="Size"><X>3.766254</X><Y>3.766254</Y><Z>1.883127</Z></Vector3>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">true</bool>
+        <float name="Transparency">1.000000</float>
+        <CoordinateFrame name="CFrame">
+            <X>-69.432350</X><Y>1685.111084</Y><Z>28728.746094</Z>
+            <R00>0.839071</R00><R01>0.278454</R01><R02>-0.467358</R02>
+            <R10>0.000000</R10><R11>0.859079</R11><R12>0.511843</R12>
+            <R20>0.544022</R20><R21>-0.429473</R21><R22>0.720828</R22>
+        </CoordinateFrame>
+        <int name="Color3int32">10724005</int>
+      </Properties>
+    <Item class="Motor6D" referent="RBX98">
+      <Properties>
+        <string name="Name">Root Hip</string>
+        <Ref name="Part0">RBX97</Ref>
+        <Ref name="Part1">RBX101</Ref>        <CoordinateFrame name="C0">
+            <X>0.000000</X><Y>0.000000</Y><Z>0.000000</Z>
+            <R00>-1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>0.000000</R11><R12>1.000000</R12>
+            <R20>0.000000</R20><R21>1.000000</R21><R22>-0.000000</R22>
+        </CoordinateFrame>        <CoordinateFrame name="C1">
+            <X>0.000000</X><Y>0.000000</Y><Z>0.000000</Z>
+            <R00>-1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>0.000000</R11><R12>1.000000</R12>
+            <R20>0.000000</R20><R21>1.000000</R21><R22>-0.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Part" referent="RBX99">
+      <Properties>
+        <string name="Name">Left Arm</string>
+        <Vector3 name="Size"><X>1.883127</X><Y>3.766254</Y><Z>1.883127</Z></Vector3>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">true</bool>
+        <float name="Transparency">1.000000</float>
+        <CoordinateFrame name="CFrame">
+            <X>-71.802467</X><Y>1685.111084</Y><Z>28727.208984</Z>
+            <R00>0.839071</R00><R01>0.278454</R01><R02>-0.467358</R02>
+            <R10>-0.000000</R10><R11>0.859079</R11><R12>0.511843</R12>
+            <R20>0.544022</R20><R21>-0.429473</R21><R22>0.720828</R22>
+        </CoordinateFrame>
+        <int name="Color3int32">10724005</int>
+      </Properties>
+    <Item class="Attachment" referent="RBX100">
+      <Properties>
+        <string name="Name">TorsoToLeftArm1</string>
+        <CoordinateFrame name="CFrame">
+            <X>0.500000</X><Y>0.500000</Y><Z>0.000000</Z>
+            <R00>1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>0.000000</R20><R21>0.000000</R21><R22>1.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Part" referent="RBX101">
+      <Properties>
+        <string name="Name">Torso</string>
+        <Vector3 name="Size"><X>3.766254</X><Y>3.766254</Y><Z>4.227849</Z></Vector3>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">true</bool>
+        <float name="Transparency">1.000000</float>
+        <CoordinateFrame name="CFrame">
+            <X>-69.432350</X><Y>1685.111084</Y><Z>28728.746094</Z>
+            <R00>0.839071</R00><R01>0.278454</R01><R02>-0.467358</R02>
+            <R10>0.000000</R10><R11>0.859079</R11><R12>0.511843</R12>
+            <R20>0.544022</R20><R21>-0.429473</R21><R22>0.720828</R22>
+        </CoordinateFrame>
+        <int name="Color3int32">10724005</int>
+      </Properties>
+    <Item class="Sound" referent="RBX102">
+      <Properties>
+        <string name="Name">scream</string>
+        <Content name="SoundId"><url>rbxassetid://4249483626</url></Content>
+        <float name="Volume">3.000000</float>
+        <float name="PlaybackSpeed">3.000000</float>
+      </Properties>
+    <Item class="DistortionSoundEffect" referent="RBX103">
+      <Properties>
+        <string name="Name">DistortionSoundEffect</string>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Motor6D" referent="RBX104">
+      <Properties>
+        <string name="Name">Neck</string>
+        <Ref name="Part0">RBX101</Ref>
+        <Ref name="Part1">RBX130</Ref>        <CoordinateFrame name="C0">
+            <X>-0.000000</X><Y>1.883130</Y><Z>0.000000</Z>
+            <R00>-1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>0.000000</R11><R12>1.000000</R12>
+            <R20>0.000000</R20><R21>1.000000</R21><R22>-0.000000</R22>
+        </CoordinateFrame>        <CoordinateFrame name="C1">
+            <X>0.000000</X><Y>-0.941563</Y><Z>0.000000</Z>
+            <R00>-1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>0.000000</R11><R12>1.000000</R12>
+            <R20>0.000000</R20><R21>1.000000</R21><R22>-0.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    <Item class="Attachment" referent="RBX105">
+      <Properties>
+        <string name="Name">TorsoToRightArm0</string>
+        <CoordinateFrame name="CFrame">
+            <X>0.500000</X><Y>-1.000000</Y><Z>0.000000</Z>
+            <R00>1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>0.000000</R20><R21>0.000000</R21><R22>1.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    <Item class="BillboardGui" referent="RBX106">
+      <Properties>
+        <string name="Name">Monstergui</string>
+      </Properties>
+    <Item class="ImageLabel" referent="RBX107">
+      <Properties>
+        <string name="Name">ImageLabel</string>
+      </Properties>
+    <Item class="Script" referent="RBX108">
+      <Properties>
+        <string name="Name">IdleRotate</string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="RBX109">
+      <Properties>
+        <string name="Name">IdlePosition</string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="RBX110">
+      <Properties>
+        <string name="Name">CryRotate</string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="RBX111">
+      <Properties>
+        <string name="Name">CryPostion</string>
+      </Properties>
+    </Item>
+    </Item>
+    </Item>
+    <Item class="Attachment" referent="RBX112">
+      <Properties>
+        <string name="Name">TorsoToLeftArm0</string>
+        <CoordinateFrame name="CFrame">
+            <X>-1.000000</X><Y>0.500000</Y><Z>0.000000</Z>
+            <R00>1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>0.000000</R20><R21>0.000000</R21><R22>1.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    <Item class="Motor6D" referent="RBX113">
+      <Properties>
+        <string name="Name">Left Shoulder</string>
+        <Ref name="Part0">RBX101</Ref>
+        <Ref name="Part1">RBX99</Ref>        <CoordinateFrame name="C0">
+            <X>-1.883130</X><Y>0.941565</Y><Z>0.000000</Z>
+            <R00>0.000000</R00><R01>0.000000</R01><R02>-1.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>1.000000</R20><R21>0.000000</R21><R22>0.000000</R22>
+        </CoordinateFrame>        <CoordinateFrame name="C1">
+            <X>0.941563</X><Y>0.941563</Y><Z>0.000000</Z>
+            <R00>-0.000000</R00><R01>0.000000</R01><R02>-1.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>1.000000</R20><R21>0.000000</R21><R22>-0.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    <Item class="Motor6D" referent="RBX114">
+      <Properties>
+        <string name="Name">Left Hip</string>
+        <Ref name="Part0">RBX101</Ref>
+        <Ref name="Part1">RBX128</Ref>        <CoordinateFrame name="C0">
+            <X>-1.883130</X><Y>-1.883130</Y><Z>0.000000</Z>
+            <R00>0.000000</R00><R01>0.000000</R01><R02>-1.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>1.000000</R20><R21>0.000000</R21><R22>0.000000</R22>
+        </CoordinateFrame>        <CoordinateFrame name="C1">
+            <X>-0.941563</X><Y>1.883127</Y><Z>0.000000</Z>
+            <R00>-0.000000</R00><R01>0.000000</R01><R02>-1.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>1.000000</R20><R21>0.000000</R21><R22>-0.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    <Item class="ParticleEmitter" referent="RBX115">
+      <Properties>
+        <string name="Name">ParticleEmitter</string>
+      </Properties>
+    </Item>
+    <Item class="Attachment" referent="RBX116">
+      <Properties>
+        <string name="Name">TorsoToRightArm0</string>
+        <CoordinateFrame name="CFrame">
+            <X>1.000000</X><Y>0.500000</Y><Z>0.000000</Z>
+            <R00>1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>0.000000</R20><R21>0.000000</R21><R22>1.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    <Item class="Attachment" referent="RBX117">
+      <Properties>
+        <string name="Name">TorsoToLeftLeg0</string>
+        <CoordinateFrame name="CFrame">
+            <X>-0.500000</X><Y>-1.000000</Y><Z>0.000000</Z>
+            <R00>1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>0.000000</R20><R21>0.000000</R21><R22>1.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    <Item class="Motor6D" referent="RBX118">
+      <Properties>
+        <string name="Name">Right Hip</string>
+        <Ref name="Part0">RBX101</Ref>
+        <Ref name="Part1">RBX95</Ref>        <CoordinateFrame name="C0">
+            <X>1.883130</X><Y>-1.883130</Y><Z>-0.000000</Z>
+            <R00>0.000000</R00><R01>0.000000</R01><R02>1.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>-0.000000</R12>
+            <R20>-1.000000</R20><R21>0.000000</R21><R22>0.000000</R22>
+        </CoordinateFrame>        <CoordinateFrame name="C1">
+            <X>0.941563</X><Y>1.883127</Y><Z>0.000000</Z>
+            <R00>-0.000000</R00><R01>0.000000</R01><R02>1.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>-1.000000</R20><R21>0.000000</R21><R22>-0.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX119">
+      <Properties>
+        <string name="Name">Sound</string>
+        <Content name="SoundId"><url>rbxassetid://704141469</url></Content>
+        <float name="Volume">3.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX120">
+      <Properties>
+        <string name="Name">Kick</string>
+        <Content name="SoundId"><url>rbxassetid://8595974357</url></Content>
+        <float name="Volume">10.000000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    <Item class="DistortionSoundEffect" referent="RBX121">
+      <Properties>
+        <string name="Name">DistortionSoundEffect</string>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="PointLight" referent="RBX122">
+      <Properties>
+        <string name="Name">PointLight</string>
+      </Properties>
+    </Item>
+    <Item class="Attachment" referent="RBX123">
+      <Properties>
+        <string name="Name">TorsoToHead0</string>
+        <CoordinateFrame name="CFrame">
+            <X>0.000000</X><Y>1.000000</Y><Z>0.000000</Z>
+            <R00>1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>0.000000</R20><R21>0.000000</R21><R22>1.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    <Item class="ParticleEmitter" referent="RBX124">
+      <Properties>
+        <string name="Name">Drop</string>
+      </Properties>
+    </Item>
+    <Item class="Motor6D" referent="RBX125">
+      <Properties>
+        <string name="Name">Right Shoulder</string>
+        <Ref name="Part0">RBX101</Ref>
+        <Ref name="Part1">RBX126</Ref>        <CoordinateFrame name="C0">
+            <X>1.883130</X><Y>0.941565</Y><Z>-0.000000</Z>
+            <R00>0.000000</R00><R01>0.000000</R01><R02>1.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>-0.000000</R12>
+            <R20>-1.000000</R20><R21>0.000000</R21><R22>0.000000</R22>
+        </CoordinateFrame>        <CoordinateFrame name="C1">
+            <X>-0.941563</X><Y>0.941563</Y><Z>0.000000</Z>
+            <R00>-0.000000</R00><R01>0.000000</R01><R02>1.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>-1.000000</R20><R21>0.000000</R21><R22>-0.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Part" referent="RBX126">
+      <Properties>
+        <string name="Name">Right Arm</string>
+        <Vector3 name="Size"><X>1.883127</X><Y>3.766254</Y><Z>1.883127</Z></Vector3>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">true</bool>
+        <float name="Transparency">1.000000</float>
+        <CoordinateFrame name="CFrame">
+            <X>-67.062233</X><Y>1685.111084</Y><Z>28730.283203</Z>
+            <R00>0.839071</R00><R01>0.278454</R01><R02>-0.467358</R02>
+            <R10>0.000000</R10><R11>0.859079</R11><R12>0.511843</R12>
+            <R20>0.544022</R20><R21>-0.429473</R21><R22>0.720828</R22>
+        </CoordinateFrame>
+        <int name="Color3int32">10724005</int>
+      </Properties>
+    <Item class="Attachment" referent="RBX127">
+      <Properties>
+        <string name="Name">TorsoToRightArm1</string>
+        <CoordinateFrame name="CFrame">
+            <X>-0.500000</X><Y>0.500000</Y><Z>0.000000</Z>
+            <R00>1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>0.000000</R20><R21>0.000000</R21><R22>1.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Part" referent="RBX128">
+      <Properties>
+        <string name="Name">Left Leg</string>
+        <Vector3 name="Size"><X>1.883127</X><Y>3.766254</Y><Z>1.883127</Z></Vector3>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">true</bool>
+        <float name="Transparency">1.000000</float>
+        <CoordinateFrame name="CFrame">
+            <X>-71.271118</X><Y>1681.875610</Y><Z>28729.851562</Z>
+            <R00>0.839071</R00><R01>0.278454</R01><R02>-0.467358</R02>
+            <R10>-0.000000</R10><R11>0.859079</R11><R12>0.511843</R12>
+            <R20>0.544022</R20><R21>-0.429473</R21><R22>0.720828</R22>
+        </CoordinateFrame>
+        <int name="Color3int32">10724005</int>
+      </Properties>
+    <Item class="Attachment" referent="RBX129">
+      <Properties>
+        <string name="Name">TorsoToLeftLeg1</string>
+        <CoordinateFrame name="CFrame">
+            <X>0.000000</X><Y>1.000000</Y><Z>0.000000</Z>
+            <R00>1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>0.000000</R20><R21>0.000000</R21><R22>1.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Part" referent="RBX130">
+      <Properties>
+        <string name="Name">Head</string>
+        <Vector3 name="Size"><X>3.766254</X><Y>1.883127</Y><Z>1.883127</Z></Vector3>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">true</bool>
+        <float name="Transparency">1.000000</float>
+        <CoordinateFrame name="CFrame">
+            <X>-68.645805</X><Y>1687.537720</Y><Z>28727.533203</Z>
+            <R00>0.839071</R00><R01>0.278454</R01><R02>-0.467358</R02>
+            <R10>0.000000</R10><R11>0.859079</R11><R12>0.511843</R12>
+            <R20>0.544022</R20><R21>-0.429473</R21><R22>0.720828</R22>
+        </CoordinateFrame>
+        <int name="Color3int32">10724005</int>
+      </Properties>
+    <Item class="Sound" referent="RBX131">
+      <Properties>
+        <string name="Name">Groan1</string>
+        <Content name="SoundId"><url>rbxassetid://9120004908</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX132">
+      <Properties>
+        <string name="Name">Groan5</string>
+        <Content name="SoundId"><url>rbxassetid://8152780685</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX133">
+      <Properties>
+        <string name="Name">Groan2</string>
+        <Content name="SoundId"><url>rbxassetid://9120005127</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX134">
+      <Properties>
+        <string name="Name">Attack1</string>
+        <Content name="SoundId"><url>rbxassetid://9117969892</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.200000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX135">
+      <Properties>
+        <string name="Name">Groan3</string>
+        <Content name="SoundId"><url>rbxassetid://9120005123</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX136">
+      <Properties>
+        <string name="Name">Groan6</string>
+        <Content name="SoundId"><url>rbxassetid://5274463739</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX137">
+      <Properties>
+        <string name="Name">Attack2</string>
+        <Content name="SoundId"><url>rbxassetid://9117969892</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">0.800000</float>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX138">
+      <Properties>
+        <string name="Name">Groan7</string>
+        <Content name="SoundId"><url>rbxassetid://4809574295</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    <Item class="Attachment" referent="RBX139">
+      <Properties>
+        <string name="Name">TorsoToHead1</string>
+        <CoordinateFrame name="CFrame">
+            <X>0.000000</X><Y>-0.600000</Y><Z>0.000000</Z>
+            <R00>1.000000</R00><R01>0.000000</R01><R02>0.000000</R02>
+            <R10>0.000000</R10><R11>1.000000</R11><R12>0.000000</R12>
+            <R20>0.000000</R20><R21>0.000000</R21><R22>1.000000</R22>
+        </CoordinateFrame>
+      </Properties>
+    </Item>
+    <Item class="Sound" referent="RBX140">
+      <Properties>
+        <string name="Name">Groan4</string>
+        <Content name="SoundId"><url>rbxassetid://9065250436</url></Content>
+        <float name="Volume">0.500000</float>
+        <float name="PlaybackSpeed">1.000000</float>
+      </Properties>
+    </Item>
+    </Item>
+    <Item class="Highlight" referent="RBX141">
+      <Properties>
+        <string name="Name">Highlight</string>
+      </Properties>
+    </Item>
+    </Item>
+</roblox>
